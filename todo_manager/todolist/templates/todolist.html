@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Todolist - Task Management App{% endblock %}
+
+{% block content %}
+<style>
+/* Custom colors and animations */
+.task-complete {
+  background: linear-gradient(45deg, #00ff00, #00ced1);
+  color: white;
+  animation: bounce 0.5s ease;
+}
+.task-pending {
+  background: linear-gradient(45deg, #00ced1, #00ff00);
+  color: white;
+  animation: pulse 1s infinite;
+}
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
+  40%, 43% { transform: translate3d(0, -8px, 0); }
+  70% { transform: translate3d(0, -4px, 0); }
+  90% { transform: translate3d(0, -2px, 0); }
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+/* Dark mode */
+body.dark-mode .table {
+  background-color: #2d3748;
+  color: #e6eef8;
+}
+body.dark-mode .table th {
+  background-color: #1a202c;
+  color: #e6eef8;
+}
+body.dark-mode .table td {
+  color: #e6eef8;
+}
+</style>
+
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-10 mx-auto">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h3 class="card-title mb-0">
+            <i class="fas fa-list-check me-2"></i>
+            Your Tasks
+          </h3>
+        </div>
+        <div class="card-body">
+          <form method="post" class="d-flex gap-2 mb-4">
+            {% csrf_token %}
+            <input name="task" class="form-control" placeholder="Add new task" aria-label="New task" required />
+            <button type="submit" class="btn btn-success">
+              <i class="fas fa-plus me-1"></i>
+              Add
+            </button>
+          </form>
+
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-primary">
+                <tr>
+                  <th>#</th>
+                  <th>Task</th>
+                  <th class="text-center">Status</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for t in tasks %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+                    {% if t.completed %}
+                      <del class="text-muted">{{ t.task }}</del>
+                    {% else %}
+                      {{ t.task }}
+                    {% endif %}
+                  </td>
+                  <td class="text-center">
+                    <form method="post" action="{% url 'toggle_task' t.id %}" style="display:inline">{% csrf_token %}
+                      <button class="btn btn-sm {% if t.completed %}task-complete{% else %}task-pending{% endif %}">
+                        {% if t.completed %}
+                          <i class="fas fa-check me-1"></i>
+                          Completed
+                        {% else %}
+                          <i class="fas fa-clock me-1"></i>
+                          Pending
+                        {% endif %}
+                      </button>
+                    </form>
+                  </td>
+                  <td class="text-center">
+                    <a href="{% url 'edit_task' t.id %}" class="btn btn-sm btn-warning me-1">
+                      <i class="fas fa-edit me-1"></i>
+                      Edit
+                    </a>
+                    <form method="post" action="{% url 'delete_task' t.id %}" style="display:inline" onsubmit="return confirm('Are you sure?')">{% csrf_token %}
+                      <button class="btn btn-sm btn-danger">
+                        <i class="fas fa-trash me-1"></i>
+                        Delete
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center text-muted py-4">
+                    <i class="fas fa-inbox fs-2 mb-2"></i>
+                    <br>
+                    No tasks yet. Add one above!
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

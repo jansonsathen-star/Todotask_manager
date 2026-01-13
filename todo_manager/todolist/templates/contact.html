@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Contact - Task Management App{% endblock %}
+
+{% block content %}
+<style>
+/* Dark mode overrides */
+body.dark-mode .contact-card {
+  background-color: #2d3748 !important;
+  color: #e6eef8 !important;
+}
+body.dark-mode .contact-card h4, body.dark-mode .contact-card p {
+  color: #e6eef8 !important;
+}
+/* Custom RGB gradients */
+.contact-hero {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+}
+.contact-card-1 {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  color: #333;
+}
+.contact-card-2 {
+  background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+  color: #333;
+}
+</style>
+
+<section class="contact-hero text-center py-5 text-white">
+  <div class="container">
+    <h1 class="display-4 font-weight-bold mb-3">
+      <i class="fas fa-envelope me-3"></i>
+      Contact Us
+    </h1>
+    <p class="lead">Get in touch with us for suggestions, issues, or contributions.</p>
+  </div>
+</section>
+
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+          <p class="mb-3">If you have suggestions or issues, please reach out. This demo app doesn't include a real contact backend, but you can email the project owner or open an issue in the repo.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-4">
+          <div class="card h-100 border-0 shadow-sm contact-card contact-card-1">
+            <div class="card-body text-center">
+              <i class="fas fa-bug fs-1 mb-3"></i>
+              <h4 class="card-title">Report Bugs</h4>
+              <p class="card-text">Open an issue in the repo with steps to reproduce.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-4">
+          <div class="card h-100 border-0 shadow-sm contact-card contact-card-2">
+            <div class="card-body text-center">
+              <i class="fas fa-code-branch fs-1 mb-3"></i>
+              <h4 class="card-title">Contribute</h4>
+              <p class="card-text">Fork the project and submit a pull request for improvements.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

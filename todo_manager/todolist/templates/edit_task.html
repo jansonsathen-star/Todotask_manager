@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Edit Task - Task Management App{% endblock %}
+
+{% block content %}
+<style>
+/* Custom styles */
+.edit-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+</style>
+
+<div class="container py-5">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h3 class="card-title mb-0">
+            <i class="fas fa-edit me-2"></i>
+            Edit Task
+          </h3>
+        </div>
+        <div class="card-body">
+          <form method="post" class="edit-form">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="task" class="form-label">Task</label>
+              <input type="text" class="form-control" id="task" name="task" value="{{ task.task }}" required>
+            </div>
+            <button type="submit" class="btn btn-success me-2">
+              <i class="fas fa-save me-1"></i>
+              Update Task
+            </button>
+            <a href="{% url 'todolist' %}" class="btn btn-secondary">
+              <i class="fas fa-arrow-left me-1"></i>
+              Back to Tasks
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

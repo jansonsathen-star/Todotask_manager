@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/wsgi.py": {
-      "runtime": "python3",
-      "maxDuration": 10
-    }
-  },
   "routes": [
     {
       "src": "/(.*)",

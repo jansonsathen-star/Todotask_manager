@@ -5,8 +5,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponseNotAllowed
 from django.db import models
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout
 import json
 
 
@@ -249,6 +249,28 @@ def reviews(request):
         "todolist_avg": round(todolist_avg, 1),
     }
     return render(request, "reviews.html", context)
+
+
+def custom_login(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f"Welcome back {user.username}!")
+            return redirect("homepage")
+    else:
+        form = AuthenticationForm()
+    return render(request, "registration/login.html", {"form": form})
+
+
+@login_required
+def custom_logout(request):
+    # Log out the user
+    logout(request)
+
+    # Always redirect to regular login page
+    return redirect("/accounts/login/")
 
 
 # Create your views here.

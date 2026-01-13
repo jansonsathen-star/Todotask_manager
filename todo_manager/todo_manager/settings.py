@@ -1,6 +1,11 @@
 import os
+import environ
 
 from pathlib import Path
+
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,16 +15,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-5p(95=d^r&w@y^v5)v&t^d#7ctse@2r$($el06=mhc4@(7$ki)"
+SECRET_KEY = env(
+    "SECRET_KEY",
+    default="django-insecure-5p(95=d^r&w@y^v5)v&t^d#7ctse@2r$($el06=mhc4@(7$ki)",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "testserver",
-]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
 
 # Application definition
@@ -71,14 +75,10 @@ WSGI_APPLICATION = "todo_manager.wsgi.application"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "mydjangodb",  # Database name
-        "USER": "mydjangouser",  # User name
-        "PASSWORD": "mypassword123",  # Password
-        "HOST": "localhost",  # Local machine
-        "PORT": "5432",  # PostgreSQL port
-    }
+    "default": env.db_url(
+        "DATABASE_URL",
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+    )
 }
 
 # Password validation

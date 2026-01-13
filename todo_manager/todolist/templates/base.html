@@ -20,9 +20,9 @@
         left: 0;
         right: 0;
         height: 72px; /* reduced to match navbar content */
-        background: linear-gradient(90deg, #0f1724, #0b3a3a, #04203a);
+        background: linear-gradient(90deg, #1e3a8a, #3b82f6, #1e40af, #1d4ed8);
         background-size: 200% 200%;
-        animation: gradientShift 14s ease-in-out infinite;
+        animation: gradientShift 12s ease-in-out infinite;
         z-index: 0;
         pointer-events: none;
       }
@@ -30,6 +30,7 @@
       body {
         background: linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
         background-attachment: fixed;
+        color: #374151;
       }
       .navbar-brand img { height:40px; width:40px; object-fit:cover; border-radius:6px; transition: transform .18s ease; }
       .navbar-brand img:hover { transform: scale(1.03); }
@@ -39,24 +40,44 @@
       .navbar .navbar-nav .nav-link.active { text-decoration: underline; }
 
       /* Dark mode overrides (toggle `dark-mode` on <body>) */
-      body.dark-mode { background: #071025; color: #e6eef8; }
-      body.dark-mode .bg-white { background-color: #0f1724 !important; }
-      body.dark-mode .bg-gray-50 { background-color: #071025 !important; }
-      body.dark-mode .text-gray-800 { color: #e6eef8 !important; }
-      body.dark-mode .text-gray-700 { color: #cbd5e1 !important; }
-      body.dark-mode .text-gray-600 { color: #94a3b8 !important; }
-      body.dark-mode .table th, body.dark-mode .table thead { background-color: #0b1220 !important; color: #e6eef8 !important; }
-      body.dark-mode .btn-primary { background-color: #2563eb !important; border-color: #2563eb !important; }
-      body.dark-mode .navbar { background: linear-gradient(90deg,#041022,#071028) !important; }
+      body.dark-mode { background: #0f172a; color: #d1d5db; }
+      body.dark-mode .bg-white { background-color: #1e293b !important; }
+      body.dark-mode .bg-gray-50 { background-color: #0f172a !important; }
+      body.dark-mode .text-gray-800 { color: #d1d5db !important; }
+      body.dark-mode .text-gray-700 { color: #9ca3af !important; }
+      body.dark-mode .text-gray-600 { color: #6b7280 !important; }
+      body.dark-mode .text-muted { color: #9ca3af !important; }
+      body.dark-mode .table th, body.dark-mode .table thead { background-color: #1e293b !important; color: #d1d5db !important; }
+      body.dark-mode .btn-primary { background-color: #3b82f6 !important; border-color: #3b82f6 !important; }
+      body.dark-mode .navbar { background: linear-gradient(90deg,#0f172a,#1e293b,#334155) !important; }
+      body.dark-mode .card { background-color: #1e293b !important; border-color: #334155 !important; color: #d1d5db !important; }
+      body.dark-mode .card-header { background-color: #334155 !important; color: #f1f5f9 !important; }
+      body.dark-mode .form-control, body.dark-mode .form-select { background-color: #1e293b !important; border-color: #475569 !important; color: #d1d5db !important; }
+      body.dark-mode .form-control:focus, body.dark-mode .form-select:focus { background-color: #1e293b !important; border-color: #3b82f6 !important; color: #d1d5db !important; }
       /* Static header */
       .navbar{
         position: relative;
         z-index: 10;
-        background: rgba(0,0,0,0.8) !important;
-        transition: background-color .22s ease, box-shadow .18s ease;
+        background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95)) !important;
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        transition: all .3s ease;
         min-height: 64px;
       }
-      .navbar:hover{ box-shadow: 0 8px 24px rgba(2,6,23,0.12); }
+      .navbar:hover{
+        background: linear-gradient(135deg, rgba(55, 65, 81, 0.98), rgba(31, 41, 55, 0.98)) !important;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+      }
+      /* Dark mode navbar hover - lighter on hover */
+      body.dark-mode .navbar{
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.95)) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+      }
+      body.dark-mode .navbar:hover{
+        background: linear-gradient(135deg, rgba(51, 65, 85, 0.98), rgba(71, 85, 105, 0.98)) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+      }
       /* scroll blur removed */
       /* make nav links highlight across the full header on hover */
       .navbar .nav-link {
@@ -79,10 +100,11 @@
         transition: transform .28s cubic-bezier(.2,.9,.3,1), background .18s ease;
       }
       .navbar .nav-link:hover{
-        background: rgba(255,255,255,0.04);
+        background: #00C3AF !important;
         border-radius:6px;
         transform: translateY(-1px);
         animation: glow 0.5s ease-in-out;
+        box-shadow: 0 0 20px rgba(0, 195, 175, 0.6) !important;
       }
       .navbar .nav-link:hover::after{ background: rgba(0,191,255,0.18); transform: scaleX(1); }
       @keyframes glow {
@@ -108,6 +130,7 @@
           <div class="navbar-nav">
             <a class="nav-link" href="{% url 'homepage' %}">Home</a>
             <a class="nav-link" href="{% url 'todolist' %}">Todo list</a>
+            <a class="nav-link" href="{% url 'reviews' %}">Reviews</a>
             <a class="nav-link" href="{% url 'contact' %}">Contact</a>
             <a class="nav-link" href="{% url 'about' %}">About</a>
           </div>
@@ -154,7 +177,7 @@
             <p>AI-Powered Task Management for the Modern Professional</p>
           </div>
           <div class="col-md-6 text-md-end">
-            <p>&copy; 2024 TaskMaster. All rights reserved.</p>
+            <p>&copy; 2026 TaskMaster. All rights reserved.</p>
             <a href="{% url 'about' %}" class="text-light me-3">About</a>
             <a href="{% url 'contact' %}" class="text-light me-3">Contact</a>
             <a href="#" class="text-light">Privacy</a>

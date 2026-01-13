@@ -28,6 +28,15 @@ body.dark-mode .about-card h4, body.dark-mode .about-card p {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
 }
+.about-card-1:hover .card-title,
+.about-card-2:hover .card-title,
+.about-card-3:hover .card-title {
+  animation: rainbowGlow 1s infinite alternate;
+}
+@keyframes rainbowGlow {
+  0% { text-shadow: 0 0 5px currentColor; }
+  100% { text-shadow: 0 0 20px currentColor, 0 0 30px currentColor; }
+}
 </style>
 
 <section class="about-hero text-center py-5 text-dark">

@@ -3,6 +3,7 @@ from todolist import views
 
 urlpatterns = [
     path("", views.homepage, name="homepage"),
+    path("register/", views.register, name="register"),
     path("todolist/", views.todolist, name="todolist"),
     path("todolist/toggle/<int:task_id>/", views.toggle_task, name="toggle_task"),
     path("edit_task/<int:task_id>/", views.edit_task, name="edit_task"),
@@ -22,4 +23,6 @@ urlpatterns = [
     ),
     path("contact/", views.contact, name="contact"),
     path("about/", views.about, name="about"),
+    path("submit_review/<str:review_type>/", views.submit_review, name="submit_review"),
+    path("reviews/", views.reviews, name="reviews"),
 ]

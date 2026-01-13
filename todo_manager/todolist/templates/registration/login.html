@@ -42,6 +42,13 @@
                 <strong>Error:</strong> Invalid username or password.
               </div>
             {% endif %}
+            <div class="text-center mt-3">
+              <p class="mb-0">Don't have an account?</p>
+              <a href="{% url 'register' %}" class="btn btn-outline-success btn-sm">
+                <i class="fas fa-user-plus me-1"></i>
+                Register
+              </a>
+            </div>
           </div>
         </div>
       </div>

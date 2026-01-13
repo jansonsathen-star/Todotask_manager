@@ -28,6 +28,14 @@
               <label for="task" class="form-label">Task</label>
               <input type="text" class="form-control" id="task" name="task" value="{{ task.task }}" required>
             </div>
+            <div class="mb-3">
+              <label for="priority" class="form-label">Priority</label>
+              <select class="form-control" id="priority" name="priority">
+                <option value="low" {% if task.priority == 'low' %}selected{% endif %}>Low</option>
+                <option value="medium" {% if task.priority == 'medium' %}selected{% endif %}>Medium</option>
+                <option value="high" {% if task.priority == 'high' %}selected{% endif %}>High</option>
+              </select>
+            </div>
             <button type="submit" class="btn btn-success me-2">
               <i class="fas fa-save me-1"></i>
               Update Task

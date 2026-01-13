@@ -4,28 +4,123 @@
 
 {% block content %}
 <style>
-/* Custom colors and animations */
-.task-complete {
-  background: linear-gradient(45deg, #00ff00, #00ced1);
-  color: white;
-  animation: bounce 0.5s ease;
+/* Advanced animations */
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.8);
+  }
+}
+
+.task-complete {
+  background: linear-gradient(45deg, #28a745, #20c997);
+  color: white;
+  animation: bounce 0.5s ease, glowPulse 1s infinite;
+}
+
 .task-pending {
-  background: linear-gradient(45deg, #00ced1, #00ff00);
+  background: linear-gradient(45deg, #ffc107, #fd7e14);
   color: white;
   animation: pulse 1s infinite;
 }
+body.dark-mode .task-pending {
+  background: linear-gradient(45deg, #00B0BA, #00C3AF) !important;
+  color: #000033 !important;
+  animation: pulse 1s infinite;
+}
+
 @keyframes bounce {
-  0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
-  40%, 43% { transform: translate3d(0, -8px, 0); }
-  70% { transform: translate3d(0, -4px, 0); }
-  90% { transform: translate3d(0, -2px, 0); }
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0,0,0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
 }
+
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
+
+.card {
+  animation: fadeInScale 0.8s ease-out;
+}
+
+.card:nth-child(odd) {
+  animation-delay: 0.2s;
+}
+
+.card:nth-child(even) {
+  animation-delay: 0.4s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+.table tr {
+  animation: slideInFromLeft 0.6s ease-out;
+}
+
+.table tr:nth-child(odd) {
+  animation-delay: 0.1s;
+}
+
+.table tr:nth-child(even) {
+  animation-delay: 0.2s;
+  animation-name: slideInFromRight;
+}
+
 /* Dark mode */
 body.dark-mode .table {
   background-color: #2d3748;
@@ -36,7 +131,7 @@ body.dark-mode .table th {
   color: #e6eef8;
 }
 body.dark-mode .table td {
-  color: #e6eef8;
+  color: #1e40af;
 }
 </style>
 
@@ -51,9 +146,45 @@ body.dark-mode .table td {
           </h3>
         </div>
         <div class="card-body">
+          <!-- Search and Filter Form -->
+          <form method="get" class="mb-4">
+            <div class="row g-2">
+              <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search tasks..." value="{{ search_query }}" />
+              </div>
+              <div class="col-md-3">
+                <select name="status" class="form-control">
+                  <option value="">All Status</option>
+                  <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                  <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <select name="priority" class="form-control">
+                  <option value="">All Priorities</option>
+                  <option value="high" {% if priority_filter == 'high' %}selected{% endif %}>High</option>
+                  <option value="medium" {% if priority_filter == 'medium' %}selected{% endif %}>Medium</option>
+                  <option value="low" {% if priority_filter == 'low' %}selected{% endif %}>Low</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                  <i class="fas fa-search me-1"></i>
+                  Filter
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Add New Task Form -->
           <form method="post" class="d-flex gap-2 mb-4">
             {% csrf_token %}
             <input name="task" class="form-control" placeholder="Add new task" aria-label="New task" required />
+            <select name="priority" class="form-select" style="width: auto;">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
             <button type="submit" class="btn btn-success">
               <i class="fas fa-plus me-1"></i>
               Add
@@ -66,7 +197,9 @@ body.dark-mode .table td {
                 <tr>
                   <th>#</th>
                   <th>Task</th>
+                  <th class="text-center">Priority</th>
                   <th class="text-center">Status</th>
+                  <th class="text-center">Created</th>
                   <th class="text-center">Actions</th>
                 </tr>
               </thead>
@@ -82,6 +215,11 @@ body.dark-mode .table td {
                     {% endif %}
                   </td>
                   <td class="text-center">
+                    <span class="badge {% if t.priority == 'high' %}bg-danger{% elif t.priority == 'medium' %}bg-warning{% else %}bg-info{% endif %}">
+                      {{ t.get_priority_display }}
+                    </span>
+                  </td>
+                  <td class="text-center">
                     <form method="post" action="{% url 'toggle_task' t.id %}" style="display:inline">{% csrf_token %}
                       <button class="btn btn-sm {% if t.completed %}task-complete{% else %}task-pending{% endif %}">
                         {% if t.completed %}
@@ -93,6 +231,9 @@ body.dark-mode .table td {
                         {% endif %}
                       </button>
                     </form>
+                  </td>
+                  <td class="text-center">
+                    <small class="text-muted">{{ t.created_at|date:"M d, H:i" }}</small>
                   </td>
                   <td class="text-center">
                     <a href="{% url 'edit_task' t.id %}" class="btn btn-sm btn-warning me-1">
@@ -109,7 +250,7 @@ body.dark-mode .table td {
                 </tr>
                 {% empty %}
                 <tr>
-                  <td colspan="4" class="text-center text-muted py-4">
+                  <td colspan="6" class="text-center text-muted py-4">
                     <i class="fas fa-inbox fs-2 mb-2"></i>
                     <br>
                     No tasks yet. Add one above!
@@ -119,6 +260,48 @@ body.dark-mode .table td {
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <!-- Review Section -->
+      <div class="card border-0 shadow-sm mt-4">
+        <div class="card-header bg-info text-white">
+          <h5 class="card-title mb-0">
+            <i class="fas fa-star me-2"></i>
+            Rate Our Todolist Feature
+          </h5>
+        </div>
+        <div class="card-body">
+          <form method="post" action="{% url 'submit_review' 'todolist' %}">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6">
+                <label for="rating" class="form-label">Rating</label>
+                <select class="form-select" id="rating" name="rating" required>
+                  <option value="">Choose rating...</option>
+                  <option value="5">5 Stars - Excellent</option>
+                  <option value="4">4 Stars - Very Good</option>
+                  <option value="3">3 Stars - Good</option>
+                  <option value="2">2 Stars - Fair</option>
+                  <option value="1">1 Star - Poor</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="comment" class="form-label">Comments (optional)</label>
+                <textarea class="form-control" id="comment" name="comment" rows="2" placeholder="What do you think about the todolist?"></textarea>
+              </div>
+            </div>
+            <div class="text-center mt-3">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-star me-2"></i>
+                Submit Review
+              </button>
+              <a href="{% url 'reviews' %}" class="btn btn-outline-secondary ms-2">
+                <i class="fas fa-eye me-1"></i>
+                View Reviews
+              </a>
+            </div>
+          </form>
         </div>
       </div>
     </div>

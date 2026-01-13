@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Reviews - {{ page_title }}{% endblock title %}
+
+{% block content %}
+<style>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInStagger {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.review-card {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.card {
+  animation: bounceIn 0.6s ease-out;
+}
+
+.star-rating {
+  color: #ffc107;
+  transition: transform 0.2s ease;
+}
+
+.star-rating:hover {
+  transform: scale(1.1);
+}
+
+.border-bottom {
+  animation: slideInStagger 0.5s ease-out;
+}
+
+.border-bottom:nth-child(1) { animation-delay: 0.1s; }
+.border-bottom:nth-child(2) { animation-delay: 0.2s; }
+.border-bottom:nth-child(3) { animation-delay: 0.3s; }
+.border-bottom:nth-child(4) { animation-delay: 0.4s; }
+.border-bottom:nth-child(5) { animation-delay: 0.5s; }
+</style>
+<div class="row">
+  <div class="col-12">
+    <h1 class="mb-4" style="animation: fadeInUp 0.8s ease-out;">User Reviews</h1>
+
+    <!-- Review Summary -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Website Reviews</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <div class="me-3">
+                {% for i in "12345" %}
+                  <i class="fas fa-star {% if forloop.counter <= website_avg %}text-warning{% else %}text-muted{% endif %}"></i>
+                {% endfor %}
+                <span class="ms-2">{{ website_avg }}/5.0</span>
+              </div>
+            </div>
+            <p class="text-muted mb-0">{{ website_reviews.count }} reviews</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Todolist Reviews</h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex align-items-center mb-2">
+              <div class="me-3">
+                {% for i in "12345" %}
+                  <i class="fas fa-star {% if forloop.counter <= todolist_avg %}text-warning{% else %}text-muted{% endif %}"></i>
+                {% endfor %}
+                <span class="ms-2">{{ todolist_avg }}/5.0</span>
+              </div>
+            </div>
+            <p class="text-muted mb-0">{{ todolist_reviews.count }} reviews</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Website Reviews -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">Website Reviews</h5>
+      </div>
+      <div class="card-body">
+        {% if website_reviews %}
+          {% for review in website_reviews %}
+            <div class="border-bottom pb-3 mb-3">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <strong>{{ review.user.username }}</strong>
+                  <div class="mb-2">
+                    {% for i in "12345" %}
+                      <i class="fas fa-star {% if forloop.counter <= review.rating %}text-warning{% else %}text-muted{% endif %}"></i>
+                    {% endfor %}
+                  </div>
+                  {% if review.comment %}
+                    <p class="mb-1">{{ review.comment }}</p>
+                  {% endif %}
+                </div>
+                <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted">No website reviews yet.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Todolist Reviews -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">Todolist Reviews</h5>
+      </div>
+      <div class="card-body">
+        {% if todolist_reviews %}
+          {% for review in todolist_reviews %}
+            <div class="border-bottom pb-3 mb-3">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <strong>{{ review.user.username }}</strong>
+                  <div class="mb-2">
+                    {% for i in "12345" %}
+                      <i class="fas fa-star {% if forloop.counter <= review.rating %}text-warning{% else %}text-muted{% endif %}"></i>
+                    {% endfor %}
+                  </div>
+                  {% if review.comment %}
+                    <p class="mb-1">{{ review.comment }}</p>
+                  {% endif %}
+                </div>
+                <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted">No todolist reviews yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

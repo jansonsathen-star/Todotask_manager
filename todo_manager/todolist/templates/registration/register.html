@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Register - Task Management App{% endblock %}
+
+{% block content %}
+<style>
+.register-form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+</style>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 mx-auto">
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-success text-white text-center">
+            <h3 class="card-title mb-0">
+              <i class="fas fa-user-plus me-2"></i>
+              Register
+            </h3>
+          </div>
+          <div class="card-body">
+            <form method="post" class="register-form">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                  <div class="text-danger small">{{ form.username.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <label for="id_password1" class="form-label">Password</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                  <div class="text-danger small">{{ form.password1.errors }}</div>
+                {% endif %}
+              </div>
+              <div class="mb-3">
+                <label for="id_password2" class="form-label">Confirm Password</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                  <div class="text-danger small">{{ form.password2.errors }}</div>
+                {% endif %}
+              </div>
+              <button type="submit" class="btn btn-success w-100">
+                <i class="fas fa-user-plus me-1"></i>
+                Register
+              </button>
+            </form>
+            <div class="text-center mt-3">
+              <p class="mb-0">Already have an account?</p>
+              <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-sign-in-alt me-1"></i>
+                Login
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

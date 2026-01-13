@@ -1,4 +1,4 @@
-from todo_manager.settings import *
+from todo_manager.todo_manager.settings import *
 
 # Override for Vercel
 DEBUG = False
